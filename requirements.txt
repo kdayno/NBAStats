@@ -1,2 +1,5 @@
 pyodbc==4.0.28
 SQLAlchemy==1.4.35
+requests==2.27.1
+pandas==1.4.2
+urllib3==1.26.9
