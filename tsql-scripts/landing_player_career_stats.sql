@@ -1,0 +1,37 @@
+CREATE TABLE [dbo].[landing_player_career_stats](
+	[career_summary_tpp] [float] NULL,
+	[career_summary_ftp] [float] NULL,
+	[career_summary_fgp] [float] NULL,
+	[career_summary_ppg] [float] NULL,
+	[career_summary_rpg] [float] NULL,
+	[career_summary_apg] [float] NULL,
+	[career_summary_bpg] [float] NULL,
+	[career_summary_mpg] [float] NULL,
+	[career_summary_spg] [float] NULL,
+	[career_summary_assists] [int] NULL,
+	[career_summary_blocks] [int] NULL,
+	[career_summary_steals] [int] NULL,
+	[career_summary_turnovers] [int] NULL,
+	[career_summary_offReb] [int] NULL,
+	[career_summary_defReb] [int] NULL,
+	[career_summary_totReb] [int] NULL,
+	[career_summary_fgm] [int] NULL,
+	[career_summary_fga] [int] NULL,
+	[career_summary_tpm] [int] NULL,
+	[career_summary_tpa] [int] NULL,
+	[career_summary_ftm] [int] NULL,
+	[career_summary_fta] [int] NULL,
+	[career_summary_pFouls] [int] NULL,
+	[career_summary_points] [int] NULL,
+	[career_summary_gamesPlayed] [int] NULL,
+	[career_summary_gamesStarted] [int] NULL,
+	[career_summary_plusMinus] [int] NULL,
+	[career_summary_min] [int] NULL,
+	[career_summary_dd2] [int] NULL,
+	[career_summary_td3] [int] NULL,
+	[personId] [varchar](100) NULL,
+	[created_timestamp] [datetime] NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[landing_player_career_stats] ADD  CONSTRAINT [DF_landing_player_career_stats_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
+GO
