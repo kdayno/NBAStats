@@ -1,4 +1,3 @@
-
 CREATE TABLE [dbo].[landing_box_score_detailed_game_stats_2](
 	[gameId] VARCHAR(max) NULL, 
 	[gameDate] VARCHAR(max) NULL, 

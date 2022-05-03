@@ -1,4 +1,3 @@
-
 CREATE TABLE [dbo].[landing_box_score_detailed_game_stats_3](
 	[gameId] VARCHAR(max) NULL, 
 	[gameDate] VARCHAR(max) NULL, 
@@ -189,5 +188,3 @@ CREATE TABLE [dbo].[landing_box_score_detailed_game_stats_3](
 GO
 ALTER TABLE [dbo].[landing_box_score_detailed_game_stats_3] ADD  CONSTRAINT [DF_landing_box_score_detailed_game_stats_3_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
 GO
-
-
