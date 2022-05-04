@@ -28,5 +28,5 @@ RUN pip install -r requirements.txt
 
 CMD ["python3","-i","main.py"]
 
-# docker run -t -d -P -v /Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/app:/app --name pyapp01 py-app
+# docker run -t -d -P -v /Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/src:/app --name pyapp01 py-app
 # docker exec -it pyapp01 bash   
