@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[landing_season_schedule](
+CREATE TABLE [landing].[season_schedule](
 	[gameId] [varchar](100) NULL,
 	[seasonStageId] [int] NULL,
 	[gameUrlCode] [varchar](100) NULL,
@@ -32,5 +32,5 @@ CREATE TABLE [dbo].[landing_season_schedule](
 	[created_timestamp] [datetime] NOT NULL
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[landing_season_schedule] ADD  CONSTRAINT [DF_landing_season_schedule_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
+ALTER TABLE [landing].[season_schedule] ADD  CONSTRAINT [DF_landing_season_schedule_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
 GO

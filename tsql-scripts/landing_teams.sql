@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[landing_teams](
+CREATE TABLE [landing].[teams](
 	[city] [varchar](50) NULL,
 	[fullName] [varchar](50) NULL,
 	[isNBAFranchise] [bit] NULL,
@@ -14,6 +14,6 @@ CREATE TABLE [dbo].[landing_teams](
 	[created_timestamp] [datetime] NOT NULL
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[landing_teams] ADD  CONSTRAINT [DF_landing_teams_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
+ALTER TABLE [landing].[teams] ADD  CONSTRAINT [DF_landing_teams_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
 GO
 

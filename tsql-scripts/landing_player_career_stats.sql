@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[landing_player_career_stats](
+CREATE TABLE [landing].[player_career_stats](
 	[career_summary_tpp] [float] NULL,
 	[career_summary_ftp] [float] NULL,
 	[career_summary_fgp] [float] NULL,
@@ -33,5 +33,5 @@ CREATE TABLE [dbo].[landing_player_career_stats](
 	[created_timestamp] [datetime] NOT NULL
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[landing_player_career_stats] ADD  CONSTRAINT [DF_landing_player_career_stats_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
+ALTER TABLE [landing].[player_career_stats] ADD  CONSTRAINT [DF_landing_player_career_stats_created_timestamp]  DEFAULT CONVERT(DATETIME,GETDATE() AT TIME ZONE CURRENT_TIMEZONE_ID() AT TIME ZONE 'Eastern Standard Time') FOR [created_timestamp]
 GO
