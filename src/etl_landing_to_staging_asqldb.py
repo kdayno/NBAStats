@@ -103,7 +103,7 @@ with engine.connect() as connection:
 
 # ETL DATA FROM "landing.player_profiles" TO "staging.player_profiles"
 with engine.connect() as connection:
-
+    # Extract
     selected_columns = ['firstName', 'lastName', 'temporaryDisplayName', 'personId', 'teamId', 'jersey',
                         'pos', 'heightFeet', 'heightInches', 'heightMeters', 'weightPounds', 'weightKilograms',
                         'dateOfBirthUTC', 'nbaDebutYear', 'yearsPro', 'collegeName', 'lastAffiliation',
@@ -118,6 +118,7 @@ with engine.connect() as connection:
 
     player_profiles_df = player_profiles_df[selected_columns]
 
+    # Transform
     rename_column_mapping = {'firstName': 'PlayerFirstName',
                              'lastName': 'PlayerLastName',
                              'temporaryDisplayName': 'PlayerFullName',
@@ -167,7 +168,6 @@ with engine.connect() as connection:
 
 # ETL DATA FROM "landing.player_career_stats" TO "staging.player_career_stats"
 with engine.connect() as connection:
-
     # Extract
     selected_columns = ['career_summary_tpp', 'career_summary_ftp', 'career_summary_fgp',
                         'career_summary_ppg', 'career_summary_rpg', 'career_summary_apg',
@@ -225,6 +225,85 @@ with engine.connect() as connection:
     player_career_stats_df.to_sql(name='player_career_stats', con=connection,
                                   schema='staging', if_exists='replace', index=False, chunksize=100)
 
+# ETL DATA FROM "landing.box_score_basic_game_stats" TO "staging.box_score_basic_game_stats"
+with engine.connect() as connection:
+    # Extract
+    selected_columns = ['bgd_seasonStageId', 'bgd_seasonYear', 'bgd_gameId',
+                        'bgd_startTimeEastern', 'bgd_startTimeUTC', 'bgd_endTimeUTC',
+                        'bgd_startDateEastern', 'bgd_gameUrlCode', 'bgd_attendance',
+                        'bgd_arena_name', 'bgd_arena_city', 'bgd_arena_stateAbbr',
+                        'bgd_arena_country', 'bgd_gameDuration_hours', 'bgd_gameDuration_minutes',
+                        'bgd_vTeam_teamId', 'bgd_vTeam_triCode', 'bgd_vTeam_win',
+                        'bgd_vTeam_loss', 'bgd_vTeam_seriesWin', 'bgd_vTeam_seriesLoss',
+                        'bgd_vTeam_score', 'bgd_hTeam_teamId', 'bgd_hTeam_triCode',
+                        'bgd_hTeam_win', 'bgd_hTeam_loss', 'bgd_hTeam_seriesWin',
+                        'bgd_hTeam_seriesLoss', 'bgd_hTeam_score', 'bgd_vTeam_linescore_1_score',
+                        'bgd_vTeam_linescore_2_score', 'bgd_vTeam_linescore_3_score', 'bgd_vTeam_linescore_4_score',
+                        'bgd_hTeam_linescore_1_score', 'bgd_hTeam_linescore_2_score', 'bgd_hTeam_linescore_3_score',
+                        'bgd_hTeam_linescore_4_score', 'bgd_officials_formatted_1_firstNameLastName', 'bgd_officials_formatted_2_firstNameLastName',
+                        'bgd_officials_formatted_3_firstNameLastName', 'gameId_gameDate']
 
-# landing_box_score_basic_game_stats
+    box_score_basic_game_stats_df = pd.read_sql_table(
+        table_name='box_score_basic_game_stats', con=connection, schema='landing', columns=selected_columns)
+
+    box_score_basic_game_stats_df = box_score_basic_game_stats_df[selected_columns]
+
+    # Transform
+    rename_column_mapping = {'bgd_seasonStageId': 'SeasonStageCode', 'bgd_seasonYear': 'SeasonYear',
+                             'bgd_gameId': 'GameID', 'bgd_startTimeEastern': 'GameStartTimeEST',
+                             'bgd_startTimeUTC': 'GameStartTimeUTC', 'bgd_endTimeUTC': 'GameEndTimeUTC',
+                             'bgd_startDateEastern': 'GameDate', 'bgd_gameUrlCode': 'GameURLCode',
+                             'bgd_attendance': 'FanAttendanceCount', 'bgd_arena_name': 'ArenaName',
+                             'bgd_arena_city': 'ArenaCityNAME', 'bgd_arena_stateAbbr': 'ArenaStateCode',
+                             'bgd_arena_country': 'ArenaCountry', 'bgd_gameDuration_hours': 'GameDurationHours',
+                             'bgd_gameDuration_minutes': 'GameDurationMinutes', 'bgd_vTeam_teamId': 'AwayTeamID',
+                             'bgd_vTeam_triCode': 'AwayTeamTriCode', 'bgd_vTeam_win': 'AwayTeamCurrentWinCount',
+                             'bgd_vTeam_loss': 'AwayTeamCurrentLossCount', 'bgd_vTeam_seriesWin': 'AwayTeamCurrentMatchUpSeriesWinCount',
+                             'bgd_vTeam_seriesLoss': 'AwayTeamCurrentMatchUpSeriesLossCount', 'bgd_vTeam_score': 'AwayTeamFinalScore',
+                             'bgd_hTeam_teamId': 'HomeTeamID', 'bgd_hTeam_triCode': 'HomeTeamTriCode',
+                             'bgd_hTeam_win': 'HomeTeamCurrentWinCount', 'bgd_hTeam_loss': 'HomeTeamCurrentLossCount',
+                             'bgd_hTeam_seriesWin': 'HomeTeamCurrentMatchUpSeriesWinCount', 'bgd_hTeam_seriesLoss': 'HomeTeamCurrentMatchUpSeriesLossCount',
+                             'bgd_hTeam_score': 'HomeTeamFinalScore', 'bgd_vTeam_linescore_1_score': 'AwayTeamQuarter1Score',
+                             'bgd_vTeam_linescore_2_score': 'AwayTeamQuarter2Score', 'bgd_vTeam_linescore_3_score': 'AwayTeamQuarter3Score',
+                             'bgd_vTeam_linescore_4_score': 'AwayTeamQuarter4Score', 'bgd_hTeam_linescore_1_score': 'HomeTeamQuarter1Score',
+                             'bgd_hTeam_linescore_2_score': 'HomeTeamQuarter2Score', 'bgd_hTeam_linescore_3_score': 'HomeTeamQuarter3Score',
+                             'bgd_hTeam_linescore_4_score': 'HomeTeamQuarter4Score', 'bgd_officials_formatted_1_firstNameLastName': 'RefereeFullName1',
+                             'bgd_officials_formatted_2_firstNameLastName': 'RefereeFullName2', 'bgd_officials_formatted_3_firstNameLastName': 'RefereeFullName3',
+                             'gameId_gameDate': 'GameIDGameDateCode'}
+
+    box_score_basic_game_stats_df.rename(
+        columns=rename_column_mapping, inplace=True)
+
+    def categorize_season(row):
+        if row['SeasonStageCode'] == 1:
+            return 'Preseason'
+        elif row['SeasonStageCode'] == 2:
+            return 'Regular Season'
+        elif row['SeasonStageCode'] == 3:
+            return 'All-Star Weekend'
+        elif row['SeasonStageCode'] == 4:
+            return 'Playoffs'
+        elif row['SeasonStageCode'] == 5:
+            return 'Play-In Tournament'
+
+    box_score_basic_game_stats_df['SeasonStageCategoryName'] = box_score_basic_game_stats_df.apply(
+        lambda row: categorize_season(row), axis=1)
+
+    box_score_basic_game_stats_df[['GameIdCopy', 'GameMatchUpTriCode']
+                                  ] = box_score_basic_game_stats_df.loc[:, 'GameURLCode'].str.split('/', expand=True)
+
+    box_score_basic_game_stats_df.drop(
+        columns=['GameURLCode', 'GameIdCopy'], inplace=True)
+
+    box_score_basic_game_stats_df = move_col(box_score_basic_game_stats_df, cols_to_move=[
+                                             'GameID', 'GameDate', 'GameMatchUpTriCode',
+                                             'HomeTeamID', 'HomeTeamTriCode', 'AwayTeamID',
+                                             'AwayTeamTriCode', 'SeasonStageCategoryName',
+                                             'HomeTeamFinalScore', 'AwayTeamFinalScore'], ref_col='SeasonStageCode', place='Before')
+
+    # Load
+    box_score_basic_game_stats_df.to_sql(name='box_score_basic_game_stats', con=connection,
+                                         schema='staging', if_exists='replace', index=False, chunksize=100)
+
+
 # landing_box_score_detailed_game_stats
