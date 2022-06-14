@@ -7,7 +7,7 @@ import datetime as dt
 from sql_column_dtypes import player_career_stats_column_dtypes, team_column_dtypes, player_profile_column_dtypes, season_schedule_column_dtypes
 import time
 import nba_stats_api as api
-import secrets as s
+import sql_secrets as s
 
 
 connection_string = f"DRIVER={s.driver};SERVER={s.server};DATABASE={s.database};UID={s.username};PWD={s.password};Port=1433;"

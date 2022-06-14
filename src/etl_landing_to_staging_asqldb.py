@@ -3,7 +3,7 @@ import sqlalchemy as sa
 import pandas as pd
 import urllib
 import nba_stats_api as api
-import secrets as s
+import sql_secrets as s
 from utilities import move_col
 
 
