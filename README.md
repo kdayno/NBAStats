@@ -18,21 +18,26 @@ The minimum viable product is a dashboard that renders in a web browser and is a
 
 ![Technical Architecture Diagram](https://github.com/kdayno/NBAWarRoomDashboard/blob/develop/docs/NBAWarRoomDashboard_SolutionArchitecture_v1.0.png)
 
-## Technologies
-- Python
-  - Pandas
-  - Requests
-  - SQLAlchemy
-- Microsoft SQL Server
+## Technology Stack
+- Python (Pandas, SQLAlchemy)
+- Azure SQL Database
 - Dash
 - Docker
 - Heroku
 
+## Data Sources
+
+- data.nba.net Endpoints
+- https://www.basketball-reference.com/
 
 
 ## Resources
 
 <i> A list of articles, videos, websites, and books used during development and deployment.</i>
+
+### Design
+- [Toronto Raptors Team Colours](https://teamcolorcodes.com/toronto-raptors-color-codes/)
+
 
 ### Development
 - [Docker Handbook](https://www.freecodecamp.org/news/the-docker-handbook/)
@@ -51,5 +56,12 @@ The minimum viable product is a dashboard that renders in a web browser and is a
 - [SQL Alchemy Working with Engine & Connections; Creating multilple connections](https://docs.sqlalchemy.org/en/13/core/connections.html#basic-usage)
 - [Pandas Function for Rearranging Columns in Dataframe](https://towardsdatascience.com/reordering-pandas-dataframe-columns-thumbs-down-on-standard-solutions-1ff0bc2941d5)
 - [Data Project Folder Structure](https://dzone.com/articles/data-science-project-folder-structure)
+- [Pandas read_sql_table()](https://pandas.pydata.org/docs/reference/api/pandas.read_sql_table.html)
+- [Pandas Create Column based on Reference Column](https://towardsdatascience.com/create-new-column-based-on-other-columns-pandas-5586d87de73d)
+- [Pandas Split Column's Values by Delimiter](https://datascienceparichay.com/article/pandas-split-column-by-delimiter/)
+- [Pandas Rename Columns](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html)
+#### Dash Dashboard Development
+- [Styling Dash App with CSS](https://www.youtube.com/watch?v=x9mUZZ19dl0)
+- [Table Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
 
 ### Deployment
