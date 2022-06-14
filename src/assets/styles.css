@@ -1,0 +1,23 @@
+h1 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: black;
+    text-align: center;
+}
+
+.data-table {
+    font-size: 10pt;
+    padding-top: 50px;
+}
+
+.table-container {
+    display: flex;
+}
+
+.left {
+    flex: 0 0 20%;
+    padding-left: 25px;
+}
+
+.right {
+    flex: 0 0 20%;
+}
