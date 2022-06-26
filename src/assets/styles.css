@@ -1,23 +1,20 @@
-h1 {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: black;
-    text-align: center;
+
+
+/* @font-face {
+    font-family: 'Jerseym54';
+} */
+
+.dash-header {
+    background-color: #051B2D;
+    font-family: Helvetica;
+    font-weight: bold;
 }
 
-.data-table {
-    font-size: 10pt;
-    padding-top: 50px;
+.menu-button:hover {
+    background-color: #051B2D;
 }
 
-.table-container {
-    display: flex;
-}
-
-.left {
-    flex: 0 0 20%;
-    padding-left: 25px;
-}
-
-.right {
-    flex: 0 0 20%;
+.menu-button {
+    padding: 0px;
+    margin-top: 0px;
 }
