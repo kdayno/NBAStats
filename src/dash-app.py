@@ -33,7 +33,7 @@ style_cell = {'height': '10px',
               'minWidth': '10px',
               'width': '250px',
               'maxWidth': '200px',
-              'font-family': 'arial',
+              'font-family': 'Helvetica',
               'textAlign': 'center'}
 
 
@@ -54,7 +54,7 @@ def create_home_link(label):
     return dmc.Text(
         label,
         size="xl",
-        style={"fontSize": 32, "color": "#FFFFFF"}
+        style={"fontSize": 34, "color": "#FFFFFF"}
     )
 
 
@@ -65,13 +65,13 @@ app.layout = dmc.Grid(
                 class_name="dash-header",
                 height=75,
                 fixed=True,
-                p="md",
+                p="sm",
                 children=[
                     dmc.Container(
                         fluid=True,
                         children=[dmc.Group(
                             position="apart",
-                            align="flex-start",
+                            align="center",
                             spacing="lg",
                             children=[
                                 dmc.Group(
@@ -82,7 +82,7 @@ app.layout = dmc.Grid(
                                             [
                                                 dmc.MediaQuery(
                                                     create_home_link(
-                                                        "NBA STATS Dashboard"),
+                                                        "NBA STATS DASHBOARD"),
                                                     smallerThan="sm",
                                                     styles={"display": "none"},
                                                 ),
@@ -94,8 +94,7 @@ app.layout = dmc.Grid(
                                                 ),
                                             ],
                                             href='/',
-                                            style={"paddingTop": 5,
-                                                   "textDecoration": "none"},
+                                            style={"textDecoration": "none"},
                                         ),
                                     ]),
                                 dmc.Group(
@@ -105,11 +104,11 @@ app.layout = dmc.Grid(
                                                 dmc.ThemeIcon(
                                                     DashIconify(
                                                         icon="dashicons:menu-alt",
-                                                        width=22,
+                                                        width=35,
                                                         color="#FFFFFF",
                                                     ),
                                                     radius=30,
-                                                    size=36,
+                                                    size=35,
                                                     variant="filled",
                                                     style={
                                                         "background-color": "#051B2D"}
@@ -143,10 +142,10 @@ app.layout = dmc.Grid(
             dmc.Text("Regular Season Standings",
                      style={"fontSize": 30,
                             "textAlign": "center",
-                            "fontWeight": "bold"}
+                            "fontWeight": "bold", }
                      ),
             span=6,
-            offset=0.10,
+            offset=0.25,
         ),
 
         dmc.Col(
@@ -168,8 +167,10 @@ app.layout = dmc.Grid(
                                      style_table=style_table)
             ),
             span=3,
-
-            style={"height": "250px"}
+            offset=0.25,
+            style={"height": "500px",
+                   "backgroundColor": "#FFFFFF",
+                   "boxShadow": "0 10px 15px 0 rgba(0, 0, 0, 0.19)"}
         ),
 
         dmc.Col(
@@ -181,12 +182,34 @@ app.layout = dmc.Grid(
                                      style_table=style_table)
             ),
             span=3,
-            # offset=0.1
+            style={"height": "500px",
+                   "width": "1000px",
+                   "backgroundColor": "#FFFFFF",
+                   "boxShadow": "10px 10px 15px 0 rgba(0, 0, 0, 0.19)"}
         ),
 
         dmc.Col(
             span=5.9
         ),
+
+        dmc.Col(
+            span=12
+        ),
+
+        dmc.Col(
+            span=12
+        ),
+
+        dmc.Col(
+            dcc.Dropdown(
+                ['Conference', 'Division'],
+                'Conference',
+                clearable=False,
+                searchable=False
+            ),
+            span=2,
+            offset=2
+        )
     ]
 )
 
