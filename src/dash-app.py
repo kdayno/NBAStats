@@ -65,7 +65,7 @@ app.layout = dmc.Grid(
                 class_name="dash-header",
                 height=75,
                 fixed=True,
-                p="sm",
+                p="xs",
                 children=[
                     dmc.Container(
                         fluid=True,
