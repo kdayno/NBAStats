@@ -2,49 +2,57 @@ from dash import Dash, html, dcc, dash_table, Output, Input, callback
 import dash_mantine_components as dmc
 import pandas as pd
 from dash_iconify import DashIconify
+import plotly.express as px
 
 
-df = pd.read_csv(
-    '/Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/data/nba_season_2021_final_standings_v2.csv')
-west_teams_df = df.loc[df['confName'] == 'West',
-                       ['fullName', 'win', 'loss', 'winPct', 'gamesBehind']]
+week_mapping = {'42': 1, '43': 2, '44': 3, '45': 4, '46': 5,
+                '47': 6, '48': 7, '49': 8, '50': 9, '51': 10, '52': 11,
+                '00': 12, '01': 13, '02': 14, '03': 15, '04': 16, '05': 17,
+                '06': 18, '07': 19, '08': 20, '09': 21, '10': 22, '11': 23,
+                '12': 24, '13': 25, '14': 26}
 
-west_teams_df.rename(columns={'fullName': 'Western Conference',
-                              'win': 'W',
-                              'loss': 'L',
-                              'winPct': 'W %',
-                              'gamesBehind': 'GB'}, inplace=True)
+file_path = r'/Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/data/nba_standings_tor_lal.csv'
 
-west_teams_df.sort_values(by='W', ascending=False, inplace=True)
+df = pd.read_csv(file_path, parse_dates=['Date'])
+df = df.sort_values(by='Date', ascending=True)
 
-east_teams_df = df.loc[df['confName'] == 'East',
-                       ['fullName', 'win', 'loss', 'winPct', 'gamesBehind']]
+df['Season Week'] = df['Date'].dt.strftime('%W')
+df['Season Week'].replace(week_mapping, inplace=True)
+df = df.groupby(['Season Week', 'Team'], as_index=False)['W'].max()
+df.sort_values(by='Season Week', ascending=True, inplace=True)
 
-east_teams_df.rename(columns={'fullName': 'Eastern Conference',
-                              'win': 'W',
-                              'loss': 'L',
-                              'winPct': 'W %',
-                              'gamesBehind': 'GB'}, inplace=True)
+color_discrete_map = {'TOR': '#CE1141',
+                      'CHI': '#CE1141', 'GSW': '#1D428A', 'LAL': '#FFC72C'}
 
-east_teams_df.sort_values(by='W', ascending=False, inplace=True)
+fig = px.scatter(df, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
+                 color="Team", hover_name="Team", range_x=[0, 26.99], range_y=[0, 83], color_discrete_map=color_discrete_map)
 
+fig.update_traces(marker=dict(size=12,
+                              line=dict(width=2)),
+                  selector=dict(mode='markers'))
 
-style_cell = {'height': '10px',
-              'minWidth': '10px',
-              'width': '250px',
-              'maxWidth': '200px',
-              'font-family': 'Helvetica',
-              'textAlign': 'center'}
+fig.update_yaxes(
+    dtick="5",
+    title="Wins")
 
+fig.update_xaxes(dtick="1")
 
-style_table = {'width': '350px',
-               'overflow': 'hidden',
-               'borderRadius': '10px',
-               'border': '1px solid black'}
+fig.update_traces(textposition='middle left')
+
+fig.update_layout(
+    width=1100,
+    height=750,
+    font=dict(
+        family="Helvetica",
+        size=12,
+    ),
+    showlegend=False,
+)
 
 
 app = Dash(__name__)
 
+# Layout:
 # Row 1 > Navigation Bar
 # Row 2 > Table Visuals + Scatterplot Visual
 # Row 3 > Dropdown Menu for Table Visuals
@@ -136,55 +144,33 @@ app.layout = dmc.Grid(
                 ]
             ),
             span=12,
-            style={"height": "120px"}),
+            style={"height": "80px"}),
+
+        # dmc.Col(
+        #     dmc.Text("Regular Season Standings",
+        #              style={"fontSize": 30,
+        #                     "textAlign": "center",
+        #                     "fontWeight": "bold", }
+        #              ),
+        #     span=6,
+        #     offset=0.25,
+        # ),
 
         dmc.Col(
-            dmc.Text("Regular Season Standings",
-                     style={"fontSize": 30,
-                            "textAlign": "center",
-                            "fontWeight": "bold", }
-                     ),
-            span=6,
-            offset=0.25,
-        ),
-
-        dmc.Col(
-            dmc.Text("Season At A Glance",
+            dmc.Text("2021-2022 Season",
                      style={"fontSize": 30,
                             "textAlign": "center",
                             "fontWeight": "bold"}
                      ),
-            span=5
+            span=12
 
         ),
-
         dmc.Col(
-            html.Div(
-                dash_table.DataTable(data=west_teams_df.to_dict('records'),
-                                     columns=[{"name": i, "id": i}
-                                              for i in west_teams_df.columns],
-                                     style_cell=style_cell,
-                                     style_table=style_table)
-            ),
-            span=3,
-            offset=0.25,
-            style={"height": "500px",
-                   "backgroundColor": "#FFFFFF",
-                   "boxShadow": "0 10px 15px 0 rgba(0, 0, 0, 0.19)"}
-        ),
-
-        dmc.Col(
-            html.Div(
-                dash_table.DataTable(data=east_teams_df.to_dict('records'),
-                                     columns=[{"name": i, "id": i}
-                                              for i in east_teams_df.columns],
-                                     style_cell=style_cell,
-                                     style_table=style_table)
-            ),
-            span=3,
-            style={"height": "500px",
-                   "backgroundColor": "#FFFFFF",
-                   "boxShadow": "10px 10px 15px 0 rgba(0, 0, 0, 0.19)"}
+            dcc.Graph(
+                id='season_standings',
+                figure=fig),
+            span=10,
+            offset=1.5
         ),
 
         dmc.Col(
