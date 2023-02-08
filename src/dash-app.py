@@ -39,7 +39,7 @@ style_cell = {'height': '10px',
 
 style_table = {'width': '350px',
                'overflow': 'hidden',
-               'borderRadius': '5px',
+               'borderRadius': '10px',
                'border': '1px solid black'}
 
 
@@ -82,7 +82,7 @@ app.layout = dmc.Grid(
                                             [
                                                 dmc.MediaQuery(
                                                     create_home_link(
-                                                        "NBA STATS DASHBOARD"),
+                                                        "NBA STATS"),
                                                     smallerThan="sm",
                                                     styles={"display": "none"},
                                                 ),
@@ -105,7 +105,7 @@ app.layout = dmc.Grid(
                                                     DashIconify(
                                                         icon="dashicons:menu-alt",
                                                         width=35,
-                                                        color="#FFFFFF",
+                                                        # color="#FFFFFF",
                                                     ),
                                                     radius=30,
                                                     size=35,
@@ -183,7 +183,6 @@ app.layout = dmc.Grid(
             ),
             span=3,
             style={"height": "500px",
-                   "width": "1000px",
                    "backgroundColor": "#FFFFFF",
                    "boxShadow": "10px 10px 15px 0 rgba(0, 0, 0, 0.19)"}
         ),
