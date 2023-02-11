@@ -20,12 +20,13 @@ df['Season Week'] = df['Date'].dt.strftime('%W')
 df['Season Week'].replace(week_mapping, inplace=True)
 df = df.groupby(['Season Week', 'Team'], as_index=False)['W'].max()
 df.sort_values(by='Season Week', ascending=True, inplace=True)
+df = df.loc[df['Season Week'] < 27]
 
 color_discrete_map = {'TOR': '#CE1141',
                       'CHI': '#CE1141', 'GSW': '#1D428A', 'LAL': '#FFC72C'}
 
 fig = px.scatter(df, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                 color="Team", hover_name="Team", range_x=[0, 26.99], range_y=[0, 83], color_discrete_map=color_discrete_map)
+                 color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map)
 
 fig.update_traces(marker=dict(size=12,
                               line=dict(width=2)),
