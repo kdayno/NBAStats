@@ -22,8 +22,12 @@ df = df.groupby(['Season Week', 'Team'], as_index=False)['W'].max()
 df.sort_values(by='Season Week', ascending=True, inplace=True)
 df = df.loc[df['Season Week'] < 27]
 
-color_discrete_map = {'TOR': '#CE1141',
-                      'CHI': '#CE1141', 'GSW': '#1D428A', 'LAL': '#FFC72C'}
+color_discrete_map = {'ATL': '#C8102E', 'BKN': '#000000', 'BOS': '#007A33', 'CHA': '#1D1160', 'CHI': '#CE1141',
+                      'CLE': '#860038', 'DAL': '#00538C', 'DEN': '#FEC524', 'DET': '#C8102E', 'GSW': '#1D428A',
+                      'HOU': '#CE1141', 'IND': '#FDBB30', 'LAC': '#C8102E', 'LAL': '#FFC72C', 'MEM': '#5D76A9',
+                      'MIA': '#98002E', 'MIL': '#00471B', 'MIN': '#0C2340', 'NOP': '#0C2340', 'NYK': '#F58426',
+                      'OKC': '#007AC1', 'ORL': '#0077C0', 'PHI': '#006BB6', 'PHX': '#E56020', 'POR': '#E03A3E',
+                      'SAC': '#5A2D81', 'SAS': '#C4CED4', 'TOR': '#CE1141', 'UTA': '#002B5C', 'WAS': '#002B5C'}
 
 fig = px.scatter(df, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
                  color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map)
