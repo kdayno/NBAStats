@@ -12,7 +12,7 @@ week_mapping = {'42': 1, '43': 2, '44': 3, '45': 4, '46': 5,
                 '06': 17, '07': 18, '08': 19, '09': 20, '10': 21, '11': 22,
                 '12': 23, '13': 24, '14': 25, '15': 25}
 
-file_path = r'/Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/data/nba_standings_tor_lal.csv'
+file_path = r'/Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/data/nba_standings_2021_2022_season.csv'
 
 df = pd.read_csv(file_path, parse_dates=['Date'])
 df = df.sort_values(by='Date', ascending=True)
@@ -81,7 +81,7 @@ app.layout = dmc.Grid(
     children=[
         dmc.Col(
             dmc.Header(
-                class_name="dash-header",
+                className="dash-header",
                 height=75,
                 fixed=True,
                 p="xs",
@@ -134,7 +134,7 @@ app.layout = dmc.Grid(
                                                 ),
                                                 variant="subtle",
                                                 size="md",
-                                                class_name="menu-button",
+                                                className="menu-button",
                                                 id="drawer-button"
                                             ),
                                             label="Menu",
@@ -157,16 +157,6 @@ app.layout = dmc.Grid(
             span=12,
             style={"height": "80px"}),
 
-        # dmc.Col(
-        #     dmc.Text("Regular Season Standings",
-        #              style={"fontSize": 30,
-        #                     "textAlign": "center",
-        #                     "fontWeight": "bold", }
-        #              ),
-        #     span=6,
-        #     offset=0.25,
-        # ),
-
         dmc.Col(
             dmc.Text("2021-2022 Season",
                      style={"fontSize": 30,
@@ -177,35 +167,86 @@ app.layout = dmc.Grid(
 
         ),
         dmc.Col(
+            dmc.Stack([
+
+                dmc.Text("Conference",
+                         style={"fontSize": 16,
+                                "textAlign": "center",
+                                "fontWeight": "bold", }
+                         ),
+
+                dmc.ChipGroup([
+                    dmc.Chip(
+                        x,
+                        value=x,
+                        variant="outline",
+                        size='md'
+                    )
+                    for x in ['Western', 'Eastern']
+                ],
+                    id="conference-values",
+                    multiple=True,
+                    position='center',
+                    style={'marginBottom': 25},
+                ),
+
+                dmc.Text("Division",
+                         style={"fontSize": 16,
+                                "textAlign": "center",
+                                "fontWeight": "bold", }
+                         ),
+
+                dmc.MultiSelect(
+                    data=['Atlantic', 'Central', 'Southeast',
+                          'Northwest', 'Pacific', 'Southwest'],
+                    searchable=True,
+                    clearable=True,
+                    nothingFound="No options found",
+                    placeholder="Select a division",
+                    style={'marginBottom': 25},
+                ),
+
+                dmc.Text("Team",
+                         style={"fontSize": 16,
+                                "textAlign": "center",
+                                "fontWeight": "bold", }
+                         ),
+
+                dmc.MultiSelect(
+                    data=['ATL', 'BKN', 'BOS', 'CHA', 'CHI',
+                          'CLE', 'DAL', 'DEN', 'DET', 'GSW',
+                          'HOU', 'IND', 'LAC', 'LAL', 'MEM',
+                          'MIA', 'MIL', 'MIN', 'NOP', 'NYK',
+                          'OKC', 'ORL', 'PHI', 'PHX', 'POR',
+                          'SAC', 'SAS', 'TOR', 'UTA', 'WAS', ],
+                    searchable=True,
+                    clearable=True,
+                    nothingFound="No options found",
+                    placeholder="Select a team",
+                    style={'marginBottom': 25},
+                ),
+
+                dmc.Button(
+                    "Reset filters",
+                    variant="light",
+                ),
+
+
+            ],
+                style={"height": 800, "paddingTop": 100},
+                spacing='sm'),
+            span=2,
+            offset=0.2
+        ),
+
+        dmc.Col(
             dcc.Graph(
                 id='season_standings',
                 figure=fig),
-            span=10,
-            offset=1.5
+            span=9,
+            offset=0.25
         ),
 
-        dmc.Col(
-            span=5.9
-        ),
-
-        dmc.Col(
-            span=12
-        ),
-
-        dmc.Col(
-            span=12
-        ),
-
-        dmc.Col(
-            dcc.Dropdown(
-                ['Conference', 'Division'],
-                'Conference',
-                clearable=False,
-                searchable=False
-            ),
-            span=2,
-            offset=2
-        )
     ]
 )
 
