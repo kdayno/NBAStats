@@ -3,6 +3,7 @@ import dash_mantine_components as dmc
 import pandas as pd
 from dash_iconify import DashIconify
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 week_mapping = {'42': 1, '43': 2, '44': 3, '45': 4, '46': 5,
@@ -31,6 +32,11 @@ color_discrete_map = {'ATL': '#C8102E', 'BKN': '#000000', 'BOS': '#007A33', 'CHA
 
 fig = px.scatter(df, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
                  color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map)
+
+last_frame_num = int(len(fig.frames) - 1)
+fig.layout['sliders'][0]['active'] = last_frame_num
+fig = go.Figure(data=fig['frames'][last_frame_num]
+                ['data'], frames=fig['frames'], layout=fig.layout)
 
 fig.update_traces(marker=dict(size=12,
                               line=dict(width=2)),
