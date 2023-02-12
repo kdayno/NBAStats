@@ -306,7 +306,7 @@ def set_team_options(input_div):
     Input(component_id='team-filter', component_property='value')
 )
 def update_graph(input_div, input_conf):
-    if (input_div is None) | (input_conf is None):
+    if (input_div is None) | (input_conf is None) | (input_div == []) | (input_conf == []):
         dff = df
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
