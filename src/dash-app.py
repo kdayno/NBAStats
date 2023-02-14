@@ -260,7 +260,17 @@ app.layout = dmc.Grid(
         ),
 
         dmc.Col(
-            dcc.Graph(id='standings-scatter-plot'),
+            html.Div([
+                dmc.LoadingOverlay(
+                    children=[dcc.Graph(id='standings-scatter-plot')],
+                    loaderProps={"variant": "oval",
+                                 "color": "blue", "size": "xl"},
+                    overlayColor='#2A2C31',
+                    overlayOpacity='80',
+                    radius='20px',
+                    style={"width": 1100, "height": 750,
+                           "background-color": "#F6F6F6"},
+                )]),
             span=9,
             offset=0.25,
         ),
@@ -302,10 +312,12 @@ def set_team_options(input_div):
 @callback(
     Output(component_id='standings-scatter-plot',
            component_property='figure'),
+    # Output(component_id="loading-icon", component_property="figure"),
     Input(component_id='division-filter', component_property='value'),
     Input(component_id='team-filter', component_property='value')
 )
 def update_graph(input_div, input_conf):
+
     if (input_div is None) | (input_conf is None) | (input_div == []) | (input_conf == []):
         dff = df
 
