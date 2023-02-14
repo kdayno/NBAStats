@@ -172,15 +172,13 @@ app.layout = dmc.Grid(
             span=12,
             style={"height": "80px"}),
 
-        dmc.Col(
-            dmc.Text("2021-2022 Season",
-                     style={"fontSize": 30,
-                            "textAlign": "center",
-                            "fontWeight": "bold"}
-                     ),
-            span=12
+        # dmc.Col(
+        #     dmc.Text("2021-2022 Season",
+        #              styl
+        #              ),
+        #     span=12
 
-        ),
+        # ),
         dmc.Col(
             dmc.Stack([
 
@@ -256,16 +254,17 @@ app.layout = dmc.Grid(
                 style={"height": 800, "paddingTop": 100},
                 spacing='sm'),
             span=2,
-            offset=0.2
+            offset=0.4
         ),
 
         dmc.Col(
             html.Div([
                 dmc.LoadingOverlay(
-                    children=[dcc.Graph(id='standings-scatter-plot')],
+                    children=[dcc.Graph(id='standings-scatter-plot',
+                                        style={'border-radius': '20px', 'background-color': '#FFFFFF'})],
                     loaderProps={"variant": "oval",
                                  "color": "blue", "size": "xl"},
-                    overlayColor='#2A2C31',
+                    overlayColor='#E0E0E0',
                     overlayOpacity='80',
                     radius='20px',
                     style={"width": 1100, "height": 750,
@@ -322,14 +321,16 @@ def update_graph(input_div, input_conf):
         dff = df
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                         color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map,)
+                         color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map,
+                         title="2021-2022 Season",)
 
     else:
         dff = df[(df['Division'].isin(input_div)) |
                  (df['Conference'].isin(input_conf))]
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                         color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map,)
+                         color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map,
+                         title="2021-2022 Season",)
 
     last_frame_num = int(len(fig.frames) - 1)
     fig.layout['sliders'][0]['active'] = last_frame_num
@@ -351,8 +352,12 @@ def update_graph(input_div, input_conf):
     fig.update_traces(textposition='middle left')
 
     fig.update_layout(
+        title_font_size=32,
+        title_font_color="#000000",
+        title_x=0.5,
         width=1100,
         height=750,
+        paper_bgcolor='rgba(0,0,0,0)',
         font=dict(
             family="Helvetica",
             size=12,
