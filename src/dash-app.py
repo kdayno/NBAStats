@@ -27,7 +27,7 @@ team_tricodes = ['ATL', 'BKN', 'BOS', 'CHA', 'CHI',
                  'OKC', 'ORL', 'PHI', 'PHX', 'POR',
                  'SAC', 'SAS', 'TOR', 'UTA', 'WAS', ]
 
-file_path = r'/Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/data/nba_standings_2021_2022_season.csv'
+file_path = r'/Users/kdayno/Development/02-PROJECTS/NBAStats/data/nba_standings_2021_2022_season.csv'
 
 df = pd.read_csv(file_path, parse_dates=['Date'])
 
@@ -172,13 +172,6 @@ app.layout = dmc.Grid(
             span=12,
             style={"height": "80px"}),
 
-        # dmc.Col(
-        #     dmc.Text("2021-2022 Season",
-        #              styl
-        #              ),
-        #     span=12
-
-        # ),
         dmc.Col(
             dmc.Stack([
 
@@ -242,14 +235,6 @@ app.layout = dmc.Grid(
                     variant="light",
                 ),
 
-                # dmc.Text(children="",
-                #          style={"fontSize": 16,
-                #                 "textAlign": "center",
-                #                 "fontWeight": "bold", },
-                #          id='team-displayed',
-                #          ),
-
-
             ],
                 style={"height": 800, "paddingTop": 100},
                 spacing='sm'),
@@ -261,14 +246,22 @@ app.layout = dmc.Grid(
             html.Div([
                 dmc.LoadingOverlay(
                     children=[dcc.Graph(id='standings-scatter-plot',
-                                        style={'border-radius': '20px', 'background-color': '#FFFFFF'})],
+                                        style={'border-radius': '10px', 'background-color': '#FFFFFF', 'width': 1100, 'height': 750,},
+                                        config={'displayModeBar': 'hover',
+                                                'autosizable': False,
+                                                'modeBarButtonsToRemove': ['pan2d', 'lasso2d'],
+                                                'displaylogo': False,
+                                                'doubleClick': 'reset'}
+                                            )
+                                        ],
                     loaderProps={"variant": "oval",
                                  "color": "blue", "size": "xl"},
                     overlayColor='#E0E0E0',
                     overlayOpacity='80',
-                    radius='20px',
+                    radius='10px',
                     style={"width": 1100, "height": 750,
                            "background-color": "#F6F6F6"},
+                    styles={"background-color": "#F6F6F6"},
                 )]),
             span=9,
             offset=0.25,
@@ -321,7 +314,7 @@ def update_graph(input_div, input_conf):
         dff = df
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                         color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map,
+                         color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
                          title="2021-2022 Season",)
 
     else:
@@ -329,7 +322,7 @@ def update_graph(input_div, input_conf):
                  (df['Conference'].isin(input_conf))]
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                         color="Team", hover_name="Team", range_x=[0, 25.99], range_y=[0, 83], color_discrete_map=color_discrete_map,
+                         color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
                          title="2021-2022 Season",)
 
     last_frame_num = int(len(fig.frames) - 1)
@@ -343,11 +336,13 @@ def update_graph(input_div, input_conf):
 
     fig.update_yaxes(
         dtick="5",
-        title="Wins")
+        title="Wins",
+        range=[0, 83])
 
     fig.update_xaxes(
         dtick="1",
-        title="Week")
+        title="Week",
+         range=[0, 25.99])
 
     fig.update_traces(textposition='middle left')
 
@@ -355,8 +350,6 @@ def update_graph(input_div, input_conf):
         title_font_size=32,
         title_font_color="#000000",
         title_x=0.5,
-        width=1100,
-        height=750,
         paper_bgcolor='rgba(0,0,0,0)',
         font=dict(
             family="Helvetica",
