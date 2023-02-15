@@ -249,7 +249,7 @@ app.layout = dmc.Grid(
                                         style={'border-radius': '10px', 'background-color': '#FFFFFF', 'width': 1100, 'height': 750,},
                                         config={'displayModeBar': 'hover',
                                                 'autosizable': False,
-                                                'modeBarButtonsToRemove': ['pan2d', 'lasso2d'],
+                                                'modeBarButtonsToRemove': ['lasso2d', 'select2d', 'zoom2d', 'resetScale2d', 'toImage'],
                                                 'displaylogo': False,
                                                 'doubleClick': 'reset'}
                                             )
@@ -257,7 +257,7 @@ app.layout = dmc.Grid(
                     loaderProps={"variant": "oval",
                                  "color": "blue", "size": "xl"},
                     overlayColor='#E0E0E0',
-                    overlayOpacity='80',
+                    overlayOpacity='50',
                     radius='10px',
                     style={"width": 1100, "height": 750,
                            "background-color": "#F6F6F6"},
