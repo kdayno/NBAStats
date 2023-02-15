@@ -178,7 +178,8 @@ app.layout = dmc.Grid(
                 dmc.Text("Conference",
                          style={"fontSize": 16,
                                 "textAlign": "center",
-                                "fontWeight": "bold", }
+                                "fontWeight": "bold",
+                                "color": "#FFFFFF"}
                          ),
 
                 dmc.ChipGroup([
@@ -199,7 +200,8 @@ app.layout = dmc.Grid(
                 dmc.Text("Division",
                          style={"fontSize": 16,
                                 "textAlign": "center",
-                                "fontWeight": "bold", }
+                                "fontWeight": "bold", 
+                                "color": "#FFFFFF"}
                          ),
 
                 dmc.MultiSelect(
@@ -216,7 +218,8 @@ app.layout = dmc.Grid(
                 dmc.Text("Team",
                          style={"fontSize": 16,
                                 "textAlign": "center",
-                                "fontWeight": "bold", }
+                                "fontWeight": "bold", 
+                                "color": "#FFFFFF"}
                          ),
 
                 dmc.MultiSelect(
@@ -236,7 +239,11 @@ app.layout = dmc.Grid(
                 ),
 
             ],
-                style={"height": 800, "paddingTop": 100},
+                style={"height": 650, "width": 230, "paddingTop": 100, "paddingRight": 20, "paddingLeft": 20,
+                "backgroundColor": "#07243B", "borderRadius": "10px", "opacity": 80, 
+                "boxShadow": "5px 5px 5px grey"},
+                # C8C6C4
+                # box-shadow: 2px 2px 2px lightgrey;
                 spacing='sm'),
             span=2,
             offset=0.4
@@ -246,7 +253,7 @@ app.layout = dmc.Grid(
             html.Div([
                 dmc.LoadingOverlay(
                     children=[dcc.Graph(id='standings-scatter-plot',
-                                        style={'border-radius': '10px', 'background-color': '#FFFFFF', 'width': 1100, 'height': 750,},
+                                        style={'border-radius': '10px', 'background-color': '#FFFFFF', 'width': 1100, 'height': 750, "boxShadow": "5px 5px 5px 5px lightgrey"},
                                         config={'displayModeBar': 'hover',
                                                 'autosizable': False,
                                                 'modeBarButtonsToRemove': ['lasso2d', 'select2d', 'zoom2d', 'resetScale2d', 'toImage'],
@@ -264,7 +271,7 @@ app.layout = dmc.Grid(
                     styles={"background-color": "#F6F6F6"},
                 )]),
             span=9,
-            offset=0.25,
+            offset=0.4,
         ),
 
     ]
@@ -315,7 +322,7 @@ def update_graph(input_div, input_conf):
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
                          color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
-                         title="2021-2022 Season",)
+                         title="<b>2021-2022 Season</b>",)
 
     else:
         dff = df[(df['Division'].isin(input_div)) |
@@ -323,7 +330,7 @@ def update_graph(input_div, input_conf):
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
                          color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
-                         title="2021-2022 Season",)
+                         title="<b>2021-2022 Season</b>",)
 
     last_frame_num = int(len(fig.frames) - 1)
     fig.layout['sliders'][0]['active'] = last_frame_num
