@@ -206,7 +206,6 @@ app.layout = dmc.Grid(
 
                 dmc.MultiSelect(
                     data=[div for div in sorted(df['Division'].unique())],
-                    value=[],
                     searchable=True,
                     clearable=True,
                     nothingFound="No options found",
@@ -224,7 +223,6 @@ app.layout = dmc.Grid(
 
                 dmc.MultiSelect(
                     data=[team for team in sorted(df['Team'].unique())],
-                    # value=[],
                     searchable=True,
                     clearable=True,
                     nothingFound="No options found",
@@ -233,17 +231,15 @@ app.layout = dmc.Grid(
                     id='team-filter'
                 ),
 
-                dmc.Button(
-                    "Reset filters",
-                    variant="light",
-                ),
+                # dmc.Button(
+                #     "Reset filters",
+                #     variant="light",
+                # ),
 
             ],
                 style={"height": 650, "width": 230, "paddingTop": 100, "paddingRight": 20, "paddingLeft": 20,
                 "backgroundColor": "#07243B", "borderRadius": "10px", "opacity": 80, 
                 "boxShadow": "5px 5px 5px grey"},
-                # C8C6C4
-                # box-shadow: 2px 2px 2px lightgrey;
                 spacing='sm'),
             span=2,
             offset=0.4
@@ -279,8 +275,8 @@ app.layout = dmc.Grid(
 
 
 @callback(
-    Output(component_id="drawer", component_property="opened"),
-    Input(component_id="drawer-button", component_property="n_clicks"),
+    Output('drawer', 'opened'),
+    Input('drawer-button', 'n_clicks'),
     prevent_initial_call=True,
 )
 def drawer_menu(n_clicks):
@@ -309,11 +305,9 @@ def set_team_options(input_div):
 
 
 @callback(
-    Output(component_id='standings-scatter-plot',
-           component_property='figure'),
-    # Output(component_id="loading-icon", component_property="figure"),
-    Input(component_id='division-filter', component_property='value'),
-    Input(component_id='team-filter', component_property='value')
+    Output('standings-scatter-plot', 'figure'),
+    Input('division-filter', 'value'),
+    Input('team-filter', 'value')
 )
 def update_graph(input_div, input_conf):
 
