@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, dash_table, Output, Input, callback, no_update
+from dash import Dash, html, dcc, Output, Input, callback, no_update
 import dash_mantine_components as dmc
 import pandas as pd
 from dash_iconify import DashIconify
@@ -200,12 +200,13 @@ app.layout = dmc.Grid(
                 dmc.Text("Division",
                          style={"fontSize": 16,
                                 "textAlign": "center",
-                                "fontWeight": "bold", 
+                                "fontWeight": "bold",
                                 "color": "#FFFFFF"}
                          ),
 
                 dmc.MultiSelect(
                     data=[div for div in sorted(df['Division'].unique())],
+                    value=[],
                     searchable=True,
                     clearable=True,
                     nothingFound="No options found",
@@ -217,12 +218,13 @@ app.layout = dmc.Grid(
                 dmc.Text("Team",
                          style={"fontSize": 16,
                                 "textAlign": "center",
-                                "fontWeight": "bold", 
+                                "fontWeight": "bold",
                                 "color": "#FFFFFF"}
                          ),
 
                 dmc.MultiSelect(
                     data=[team for team in sorted(df['Team'].unique())],
+                    value=[],
                     searchable=True,
                     clearable=True,
                     nothingFound="No options found",
@@ -238,8 +240,8 @@ app.layout = dmc.Grid(
 
             ],
                 style={"height": 650, "width": 230, "paddingTop": 100, "paddingRight": 20, "paddingLeft": 20,
-                "backgroundColor": "#07243B", "borderRadius": "10px", "opacity": 80, 
-                "boxShadow": "5px 5px 5px grey"},
+                       "backgroundColor": "#07243B", "borderRadius": "10px", "opacity": 80,
+                       "boxShadow": "5px 5px 5px grey"},
                 spacing='sm'),
             span=2,
             offset=0.4
@@ -249,14 +251,15 @@ app.layout = dmc.Grid(
             html.Div([
                 dmc.LoadingOverlay(
                     children=[dcc.Graph(id='standings-scatter-plot',
-                                        style={'border-radius': '10px', 'background-color': '#FFFFFF', 'width': 1100, 'height': 750, "boxShadow": "5px 5px 5px 5px lightgrey"},
+                                        style={'border-radius': '10px', 'background-color': '#FFFFFF',
+                                               'width': 1100, 'height': 750, "boxShadow": "5px 5px 5px 5px lightgrey"},
                                         config={'displayModeBar': 'hover',
                                                 'autosizable': False,
                                                 'modeBarButtonsToRemove': ['lasso2d', 'select2d', 'zoom2d', 'resetScale2d', 'toImage'],
                                                 'displaylogo': False,
                                                 'doubleClick': 'reset'}
-                                            )
-                                        ],
+                                        )
+                              ],
                     loaderProps={"variant": "oval",
                                  "color": "blue", "size": "xl"},
                     overlayColor='#E0E0E0',
@@ -285,7 +288,7 @@ def drawer_menu(n_clicks):
 
 @callback(
     Output('division-filter', 'value'),
-    Input('conference-filter', 'value')
+    Input('conference-filter', 'value'),
 )
 def set_division_options(input_conf):
     if input_conf == None:
@@ -297,7 +300,7 @@ def set_division_options(input_conf):
 
 @callback(
     Output('team-filter', 'value'),
-    Input('division-filter', 'value')
+    Input('division-filter', 'value'),
 )
 def set_team_options(input_div):
     dff = df[df['Division'].isin(input_div)]
@@ -306,26 +309,26 @@ def set_team_options(input_div):
 
 @callback(
     Output('standings-scatter-plot', 'figure'),
+    Input('conference-filter', 'value'),
     Input('division-filter', 'value'),
-    Input('team-filter', 'value')
+    Input('team-filter', 'value'),
 )
-def update_graph(input_div, input_conf):
+def update_graph(input_conf, input_div, input_team):
 
-    if (input_div is None) | (input_conf is None) | (input_div == []) | (input_conf == []):
+    if (input_team is None) | (input_team == []):
         dff = df
-
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
                          color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
                          title="<b>2021-2022 Season</b>",)
 
     else:
-        dff = df[(df['Division'].isin(input_div)) |
-                 (df['Conference'].isin(input_conf))]
+        dff = df[(df['Team'].isin(input_team))]
 
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
                          color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
                          title="<b>2021-2022 Season</b>",)
 
+    # Sets plot to display final team standings by default
     last_frame_num = int(len(fig.frames) - 1)
     fig.layout['sliders'][0]['active'] = last_frame_num
     fig = go.Figure(data=fig['frames'][last_frame_num]
@@ -343,7 +346,7 @@ def update_graph(input_div, input_conf):
     fig.update_xaxes(
         dtick="1",
         title="Week",
-         range=[0, 25.99])
+        range=[0, 25.99])
 
     fig.update_traces(textposition='middle left')
 
