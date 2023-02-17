@@ -184,12 +184,20 @@ app.layout = dmc.Grid(
 
                 dmc.ChipGroup([
                     dmc.Chip(
-                        children=conf,
-                        value=conf,
+                        children='Western',
+                        value='Western',
                         variant="outline",
-                        size='md'
-                    )
-                    for conf in sorted(df['Conference'].unique())
+                        size='md',
+                        id='chip-west'
+                    ),
+                    dmc.Chip(
+                        children='Eastern',
+                        value='Eastern',
+                        variant="outline",
+                        size='md',
+                        id='chip-east'
+                    ),
+
                 ],
                     id="conference-filter",
                     multiple=True,
@@ -233,10 +241,14 @@ app.layout = dmc.Grid(
                     id='team-filter'
                 ),
 
-                # dmc.Button(
-                #     "Reset filters",
-                #     variant="light",
-                # ),
+                dmc.Button(
+                    "Reset filters",
+                    # leftIcon=DashIconify(
+                    #     icon="carbon:settings-check"),
+                    variant="gradient",
+                    gradient={"from": "silver", "to": "gray"},
+                    id='reset-filters-button'
+                ),
 
             ],
                 style={"height": 650, "width": 230, "paddingTop": 100, "paddingRight": 20, "paddingLeft": 20,
@@ -296,6 +308,18 @@ def set_division_options(input_conf):
     else:
         dff = df[df['Conference'].isin(input_conf)]
         return [d for d in sorted(dff['Division'].unique())]
+
+
+@callback(
+    Output('chip-east', 'checked'),
+    Output('chip-west', 'checked'),
+    Output('conference-filter', 'value'),
+    Input('reset-filters-button', 'n_clicks'),
+    prevent_initial_call=True,
+)
+def reset_filters(click):
+    if click:
+        return (False, False, [])
 
 
 @callback(
