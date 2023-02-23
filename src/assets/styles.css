@@ -1,9 +1,3 @@
-
-
-/* @font-face {
-    font-family: 'Jerseym54';
-} */
-
 .dash-header {
     background-color: #051B2D;
     font-family: Helvetica;
@@ -12,9 +6,14 @@
 
 .menu-button:hover {
     background-color: #051B2D;
+    color: #828E97;
 }
 
 .menu-button {
     padding: 0px;
     margin-top: 0px;
+}
+
+body {
+    background-color: #F6F6F6;
 }
