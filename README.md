@@ -16,7 +16,7 @@ The minimum viable product is a dashboard that renders in a web browser and is a
 
 ## Technical Architecture Diagram
 
-![Technical Architecture Diagram](https://github.com/kdayno/NBAWarRoomDashboard/blob/develop/docs/NBAWarRoomDashboard_SolutionArchitecture_v1.0.png)
+![Technical Architecture Diagram](https://github.com/kdayno/NBAWarRoomDashboard/blob/develop/docs/NBAStats-SolutionArchitecture.png)
 
 ## Technology Stack
 - Python (Pandas, SQLAlchemy)
