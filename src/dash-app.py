@@ -156,7 +156,7 @@ app.layout = dmc.Grid(
                                             position="bottom",
                                         ),
                                         dmc.Drawer(
-                                            title="Drawer Menu",
+                                            title="Coming soon...",
                                             id="drawer",
                                             padding="md",
                                             position="right"
@@ -202,7 +202,7 @@ app.layout = dmc.Grid(
                     id="conference-filter",
                     multiple=True,
                     position='center',
-                    style={'marginBottom': 25},
+                    style={'marginBottom': 20},
                 ),
 
                 dmc.Text("Division",
@@ -219,7 +219,7 @@ app.layout = dmc.Grid(
                     clearable=True,
                     nothingFound="No options found",
                     placeholder="Select a division",
-                    style={'marginBottom': 25},
+                    style={'marginBottom': 20},
                     id='division-filter'
                 ),
 
@@ -237,26 +237,29 @@ app.layout = dmc.Grid(
                     clearable=True,
                     nothingFound="No options found",
                     placeholder="Select a team",
-                    style={'marginBottom': 25},
+                    rightSectionWidth=50,
+                    # maxSelectedValues=3,
+                    style={'marginBottom': 20},
                     id='team-filter'
                 ),
 
                 dmc.Button(
-                    "Reset filters",
+                    "Reset",
                     # leftIcon=DashIconify(
                     #     icon="carbon:settings-check"),
                     variant="gradient",
                     gradient={"from": "silver", "to": "gray"},
+                    style={'color': '#000000'},
                     id='reset-filters-button'
                 ),
 
             ],
-                style={"height": 650, "width": 230, "paddingTop": 100, "paddingRight": 20, "paddingLeft": 20,
+                style={"height": 700, "width": 280, "paddingTop": 50, "paddingRight": 20, "paddingLeft": 20,
                        "backgroundColor": "#07243B", "borderRadius": "10px", "opacity": 80,
                        "boxShadow": "5px 5px 5px grey"},
                 spacing='sm'),
             span=2,
-            offset=0.4
+            offset=0.2,
         ),
 
         dmc.Col(
@@ -282,7 +285,7 @@ app.layout = dmc.Grid(
                     styles={"background-color": "#F6F6F6"},
                 )]),
             span=9,
-            offset=0.4,
+            offset=0.8,
         ),
 
     ]
