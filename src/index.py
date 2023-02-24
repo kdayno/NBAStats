@@ -6,6 +6,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 
+from app import app
 
 week_mapping = {'42': 1, '43': 2, '44': 3, '45': 4, '46': 5,
                 '47': 6, '48': 7, '49': 8, '50': 9, '51': 10, '52': 11,
@@ -139,7 +140,6 @@ app.layout = dmc.Grid(
                                                     DashIconify(
                                                         icon="dashicons:menu-alt",
                                                         width=35,
-                                                        # color="#FFFFFF",
                                                     ),
                                                     radius=30,
                                                     size=35,
@@ -245,8 +245,6 @@ app.layout = dmc.Grid(
 
                 dmc.Button(
                     "Reset",
-                    # leftIcon=DashIconify(
-                    #     icon="carbon:settings-check"),
                     variant="gradient",
                     gradient={"from": "silver", "to": "gray"},
                     style={'color': '#000000'},
