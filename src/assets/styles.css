@@ -14,6 +14,34 @@
     margin-top: 0px;
 }
 
+.menu-icons {
+    width: 50px;
+    height: 40px;
+    color: #000000;
+    background-color: #FFFFFF;
+    padding: 10px 0px
+}
+
+.menu-links {
+    outline: none;
+    color: #000000;
+    text-decoration: none;
+    font-size: 26px;
+    vertical-align: top;
+    padding: 5px 60px;
+}
+
+.menu-links:hover {
+    background: #979CA2;
+    border-radius: 5px;
+}
+
+.error-page {
+    text-align: center;
+    padding: 250px 0px;
+    font-family: 'Helvetica';
+}
+
 body {
     background-color: #F6F6F6;
 }
