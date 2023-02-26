@@ -16,7 +16,7 @@ The minimum viable product is a dashboard that renders in a web browser and is a
 
 ## Technical Architecture Diagram
 
-![Technical Architecture Diagram](https://github.com/kdayno/NBAWarRoomDashboard/blob/develop/docs/NBAWarRoomDashboard_SolutionArchitecture_v1.0.png)
+![Technical Architecture Diagram](https://github.com/kdayno/NBAWarRoomDashboard/blob/develop/docs/NBAStats-SolutionArchitecture.png)
 
 ## Technology Stack
 - Python (Pandas, SQLAlchemy)
@@ -63,5 +63,7 @@ The minimum viable product is a dashboard that renders in a web browser and is a
 #### Dash Dashboard Development
 - [Styling Dash App with CSS](https://www.youtube.com/watch?v=x9mUZZ19dl0)
 - [Table Layout](https://developer.mozilla.org/en-US/docs/Web/CSS/table-layout)
-
+- [CSS Tricks](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+- [Dash Mantine Components Docs](https://www.dash-mantine-components.com/)
+- https://stackoverflow.com/questions/59619331/plotly-do-not-connect-gaps-in-plotly-express-line-graph
 ### Deployment

@@ -2,3 +2,5 @@
 /.__pycache__
 /.DS_Store
 /src/__pycache__
+/development
+/src/sql_secrets.py
