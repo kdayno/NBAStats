@@ -1,12 +1,28 @@
+import dash
 from dash import Dash, html, dcc, Output, Input, callback, no_update
 import dash_mantine_components as dmc
 import pandas as pd
 from dash_iconify import DashIconify
+from .menu_bar import menubar
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
+import pathlib
 
-from app import app
+
+PATH = pathlib.Path(__file__).parent
+DATA_PATH = PATH.joinpath("../data").resolve()
+# ASSETS_PATH = PATH.joinpath("../assets").resolve()
+
+df = pd.read_csv(DATA_PATH.joinpath(
+    "nba_standings_2021_2022_season.csv"), parse_dates=['Date'])
+
+
+dash.register_page(
+    __name__,
+    path='/',
+    redirect_from=["/home"])
+
 
 week_mapping = {'42': 1, '43': 2, '44': 3, '45': 4, '46': 5,
                 '47': 6, '48': 7, '49': 8, '50': 9, '51': 10, '52': 11,
@@ -28,9 +44,6 @@ team_tricodes = ['ATL', 'BKN', 'BOS', 'CHA', 'CHI',
                  'OKC', 'ORL', 'PHI', 'PHX', 'POR',
                  'SAC', 'SAS', 'TOR', 'UTA', 'WAS', ]
 
-file_path = r'/Users/kdayno/Development/02-PROJECTS/NBAStats/data/nba_standings_2021_2022_season.csv'
-
-df = pd.read_csv(file_path, parse_dates=['Date'])
 
 eastern_conf = ['ATL', 'BKN', 'BOS', 'CHA', 'CHI',
                 'CLE', 'DET', 'IND', 'MIA', 'MIL',
@@ -82,95 +95,13 @@ df.sort_values(by='Season Week', ascending=True, inplace=True)
 df = df.loc[df['Season Week'] < 27]
 
 
-app = Dash(__name__)
-
-
-def create_home_link(label):
-    return dmc.Text(
-        label,
-        size="xl",
-        style={"fontSize": 34, "color": "#FFFFFF"}
-    )
-
-
-app.layout = dmc.Grid(
+layout = dmc.Grid(
     children=[
         dmc.Col(
-            dmc.Header(
-                className="dash-header",
-                height=75,
-                fixed=True,
-                p="xs",
-                children=[
-                    dmc.Container(
-                        fluid=True,
-                        children=[dmc.Group(
-                            position="apart",
-                            align="center",
-                            spacing="lg",
-                            children=[
-                                dmc.Group(
-                                    children=[
-                                        html.Img(src=app.get_asset_url(
-                                            'nba-logo-transparent.png'), style={'height': '50px', 'width': '25px'}),
-                                        dcc.Link(
-                                            [
-                                                dmc.MediaQuery(
-                                                    create_home_link(
-                                                        "NBA STATS"),
-                                                    smallerThan="sm",
-                                                    styles={"display": "none"},
-                                                ),
-                                                dmc.MediaQuery(
-                                                    create_home_link(
-                                                        "NBA STATS"),
-                                                    largerThan="sm",
-                                                    styles={"display": "none"},
-                                                ),
-                                            ],
-                                            href='/',
-                                            style={"textDecoration": "none"},
-                                        ),
-                                    ]),
-                                dmc.Group(
-                                    children=[
-                                        dmc.Tooltip(
-                                            dmc.Button(
-                                                dmc.ThemeIcon(
-                                                    DashIconify(
-                                                        icon="dashicons:menu-alt",
-                                                        width=35,
-                                                    ),
-                                                    radius=30,
-                                                    size=35,
-                                                    variant="filled",
-                                                    style={
-                                                        "background-color": "#051B2D"}
-                                                ),
-                                                variant="subtle",
-                                                size="md",
-                                                className="menu-button",
-                                                id="drawer-button"
-                                            ),
-                                            label="Menu",
-                                            position="bottom",
-                                        ),
-                                        dmc.Drawer(
-                                            title="Coming soon...",
-                                            id="drawer",
-                                            padding="md",
-                                            position="right"
-                                        )
-                                    ]
-                                )
-                            ]
-                        )
-                        ]
-                    )
-                ]
-            ),
+            menubar(),
             span=12,
-            style={"height": "80px"}),
+            style={"height": "80px"}
+        ),
 
         dmc.Col(
             dmc.Stack([
@@ -388,7 +319,3 @@ def update_graph(input_conf, input_div, input_team):
     )
 
     return fig
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True, port=8055)
