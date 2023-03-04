@@ -7,6 +7,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
+dash = "2.5.1"
+numpy = "1.22.3"
+pandas = "1.4.2"
+dash-core-components = "2.0.0"
+dash-iconify = "0.1.2"
+dash-mantine-components = "0.11.1"
+dash-table = "5.0.0"
+gunicorn = "^20.1.0"
 
 
 [build-system]
