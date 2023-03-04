@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "nbastats"
+version = "1.0.0"
+description = "NBA Stats Dash App"
+authors = ["Kevin Dayno <kdayno@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
