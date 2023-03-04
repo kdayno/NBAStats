@@ -6,7 +6,7 @@ authors = ["Kevin Dayno <kdayno@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "3.9.16"
 dash = "2.5.1"
 numpy = "1.22.3"
 pandas = "1.4.2"
