@@ -1,22 +1,25 @@
-import dash
-from dash import Dash, html, dcc, Output, Input, callback, no_update
-import dash_mantine_components as dmc
-import pandas as pd
-from dash_iconify import DashIconify
-from .menu_bar import menubar
-import plotly.express as px
-import plotly.graph_objects as go
-import numpy as np
+'''
+This is the home page for the NBA Stats Dash application.
+'''
+
 import pathlib
 
+import dash
+from dash import html, dcc, Output, Input, callback, no_update
+import dash_mantine_components as dmc
+import numpy as np
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+
+from pages.menu_bar import menubar
 
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("../data").resolve()
-# ASSETS_PATH = PATH.joinpath("../assets").resolve()
 
 df = pd.read_csv(DATA_PATH.joinpath(
-    "nba_standings_2021_2022_season.csv"), parse_dates=['Date'])
-
+    "nba_standings_2021_2022_season.csv"), parse_dates=['Date'],
+    usecols=['Team', 'G', 'Date', 'W', 'L'])
 
 dash.register_page(
     __name__,
@@ -235,7 +238,7 @@ def drawer_menu(n_clicks):
     Input('conference-filter', 'value'),
 )
 def set_division_options(input_conf):
-    if input_conf == None:
+    if input_conf is None:
         return no_update
     else:
         dff = df[df['Conference'].isin(input_conf)]
@@ -265,24 +268,22 @@ def set_team_options(input_div):
 
 @callback(
     Output('standings-scatter-plot', 'figure'),
-    Input('conference-filter', 'value'),
-    Input('division-filter', 'value'),
     Input('team-filter', 'value'),
 )
-def update_graph(input_conf, input_div, input_team):
+def update_graph(input_team):
 
     if (input_team is None) | (input_team == []):
         dff = df
-        fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                         color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
-                         title="<b>2021-2022 Season</b>",)
+        fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
+                         animation_group="Team", text="Team", color="Team", hover_name="Team",
+                         color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
 
     else:
         dff = df[(df['Team'].isin(input_team))]
 
-        fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week", animation_group="Team", text="Team",
-                         color="Team", hover_name="Team", color_discrete_map=color_discrete_map,
-                         title="<b>2021-2022 Season</b>",)
+        fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
+                         animation_group="Team", text="Team", color="Team", hover_name="Team",
+                         color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
 
     # Sets plot to display final team standings by default
     last_frame_num = int(len(fig.frames) - 1)
