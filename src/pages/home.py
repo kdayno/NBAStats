@@ -188,6 +188,7 @@ def drawer_menu(n_clicks):
 @callback(
     Output('division-filter', 'value'),
     Input('conference-filter', 'value'),
+    prevent_initial_call=True,
 )
 def set_division_options(input_conf):
     dff = df[df['Conference'].isin(input_conf)]
@@ -209,6 +210,7 @@ def reset_filters(click):
 @callback(
     Output('team-filter', 'value'),
     Input('division-filter', 'value'),
+    prevent_initial_call=True,
 )
 def set_team_options(input_div):
     dff = df[df['Division'].isin(input_div)]
