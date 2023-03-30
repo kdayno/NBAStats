@@ -48,6 +48,50 @@ df = df.groupby(['Season Week', 'Team', 'Conference', 'Conference Indicator',
 df.sort_values(by='Season Week', ascending=True, inplace=True)
 df = df.loc[df['Season Week'] < 27]
 
+initial_fig = px.scatter(df, x="Season Week", y="W", animation_frame="Season Week",
+                    animation_group="Team", text="Team", color="Team", hover_name="Team",
+                    color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
+
+def update_fig(fig):
+
+    # Sets plot to display final team standings by default
+    if len(fig.layout['sliders']) > 0:
+        last_frame_num = int(len(fig.frames) - 1)
+        fig.layout['sliders'][0]['active'] = last_frame_num
+        fig = go.Figure(data=fig['frames'][last_frame_num]
+                        ['data'], frames=fig['frames'], layout=fig.layout)
+
+    fig.update_traces(marker=dict(size=12,
+                                    line=dict(width=2)),
+                        selector=dict(mode='markers'))
+
+    fig.update_yaxes(
+        dtick="5",
+        title="Wins",
+        range=[0, 83])
+
+    fig.update_xaxes(
+        dtick="1",
+        title="Week",
+        range=[0, 25.99])
+
+    fig.update_traces(textposition='middle left')
+
+    fig.update_layout(
+        title_font_size=32,
+        title_font_color="#000000",
+        title_x=0.5,
+        paper_bgcolor='rgba(0,0,0,0)',
+        font=dict(
+            family="Helvetica",
+            size=12,
+        ),
+        showlegend=False,
+    )
+
+    return fig
+
+initial_fig = update_fig(initial_fig)
 
 layout = dmc.Grid(
     children=[
@@ -156,7 +200,8 @@ layout = dmc.Grid(
                                                 'autosizable': False,
                                                 'modeBarButtonsToRemove': ['lasso2d', 'select2d', 'zoom2d', 'resetScale2d', 'toImage'],
                                                 'displaylogo': False,
-                                                'doubleClick': 'reset'}
+                                                'doubleClick': 'reset'},
+                                        figure=initial_fig,
                                         )
                               ],
                     loaderProps={"variant": "oval",
@@ -191,8 +236,11 @@ def drawer_menu(n_clicks):
     prevent_initial_call=True,
 )
 def set_division_options(input_conf):
-    dff = df[df['Conference'].isin(input_conf)]
-    return [d for d in sorted(dff['Division'].unique())]
+    if input_conf is not None:
+        dff = df[df['Conference'].isin(input_conf)]
+        return [d for d in sorted(dff['Division'].unique())]
+
+    return no_update
 
 
 @callback(
@@ -213,61 +261,32 @@ def reset_filters(click):
     prevent_initial_call=True,
 )
 def set_team_options(input_div):
-    dff = df[df['Division'].isin(input_div)]
-    return [team for team in sorted(dff['Team'].unique())]
+    if input_div is not None:
+        dff = df[df['Division'].isin(input_div)]
+        return [team for team in sorted(dff['Team'].unique())]
 
+    return no_update
 
 @callback(
     Output('standings-scatter-plot', 'figure'),
     Input('team-filter', 'value'),
+     prevent_initial_call=True,
 )
 def update_graph(input_team):
 
-    if (input_team is None) | (input_team == []):
+    if input_team != []:
+        dff = df[(df['Team'].isin(input_team))]
+        fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
+                         animation_group="Team", text="Team", color="Team", hover_name="Team",
+                         color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
+        fig = update_fig(fig)
+
+        return fig
+
+    else:
         dff = df
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
                          animation_group="Team", text="Team", color="Team", hover_name="Team",
                          color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
-
-    else:
-        dff = df[(df['Team'].isin(input_team))]
-
-        fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
-                         animation_group="Team", text="Team", color="Team", hover_name="Team",
-                         color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
-
-    # Sets plot to display final team standings by default
-    last_frame_num = int(len(fig.frames) - 1)
-    fig.layout['sliders'][0]['active'] = last_frame_num
-    fig = go.Figure(data=fig['frames'][last_frame_num]
-                    ['data'], frames=fig['frames'], layout=fig.layout)
-
-    fig.update_traces(marker=dict(size=12,
-                                  line=dict(width=2)),
-                      selector=dict(mode='markers'))
-
-    fig.update_yaxes(
-        dtick="5",
-        title="Wins",
-        range=[0, 83])
-
-    fig.update_xaxes(
-        dtick="1",
-        title="Week",
-        range=[0, 25.99])
-
-    fig.update_traces(textposition='middle left')
-
-    fig.update_layout(
-        title_font_size=32,
-        title_font_color="#000000",
-        title_x=0.5,
-        paper_bgcolor='rgba(0,0,0,0)',
-        font=dict(
-            family="Helvetica",
-            size=12,
-        ),
-        showlegend=False,
-    )
-
-    return fig
+        fig = update_fig(fig)
+        return fig
