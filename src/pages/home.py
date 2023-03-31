@@ -95,6 +95,10 @@ initial_fig = update_fig(initial_fig)
 
 layout = dmc.Grid(
     children=[
+        dcc.Store(id='store-data', data=[], storage_type='session'),
+
+        html.Div(id='dummy-div', children=[]),
+
         dmc.Col(
             menubar(),
             span=12,
@@ -220,6 +224,12 @@ layout = dmc.Grid(
     ]
 )
 
+@callback(
+        Output('store-data', 'data'),
+        Input('dummy-div', 'children'),
+)
+def store_data(data):
+    return df.to_dict('records')
 
 @callback(
     Output('drawer', 'opened'),
@@ -233,11 +243,13 @@ def drawer_menu(n_clicks):
 @callback(
     Output('division-filter', 'value'),
     Input('conference-filter', 'value'),
+    Input('store-data', 'data'),
     prevent_initial_call=True,
 )
-def set_division_options(input_conf):
+def set_division_options(input_conf, data):
     if input_conf is not None:
-        dff = df[df['Conference'].isin(input_conf)]
+        dff = pd.DataFrame(data)
+        dff = dff[dff['Conference'].isin(input_conf)]
         return [d for d in sorted(dff['Division'].unique())]
 
     return no_update
@@ -258,11 +270,13 @@ def reset_filters(click):
 @callback(
     Output('team-filter', 'value'),
     Input('division-filter', 'value'),
+    Input('store-data', 'data'),
     prevent_initial_call=True,
 )
-def set_team_options(input_div):
+def set_team_options(input_div, data):
     if input_div is not None:
-        dff = df[df['Division'].isin(input_div)]
+        dff = pd.DataFrame(data)
+        dff = dff[dff['Division'].isin(input_div)]
         return [team for team in sorted(dff['Team'].unique())]
 
     return no_update
@@ -270,11 +284,13 @@ def set_team_options(input_div):
 @callback(
     Output('standings-scatter-plot', 'figure'),
     Input('team-filter', 'value'),
-     prevent_initial_call=True,
+    Input('store-data', 'data'),
+    prevent_initial_call=True,
 )
-def update_graph(input_team):
+def update_graph(input_team, data):
 
     if input_team != []:
+        dff = pd.DataFrame(data)
         dff = df[(df['Team'].isin(input_team))]
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
                          animation_group="Team", text="Team", color="Team", hover_name="Team",
@@ -284,7 +300,7 @@ def update_graph(input_team):
         return fig
 
     else:
-        dff = df
+        dff = pd.DataFrame(data)
         fig = px.scatter(dff, x="Season Week", y="W", animation_frame="Season Week",
                          animation_group="Team", text="Team", color="Team", hover_name="Team",
                          color_discrete_map=color_discrete_map, title="<b>2021-2022 Season</b>",)
