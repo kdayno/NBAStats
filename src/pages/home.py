@@ -227,6 +227,7 @@ layout = dmc.Grid(
 @callback(
         Output('store-data', 'data'),
         Input('dummy-div', 'children'),
+        background=True,
 )
 def store_data(data):
     return df.to_dict('records')
