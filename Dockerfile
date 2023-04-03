@@ -1,32 +1,10 @@
-FROM ubuntu:latest
+FROM python:3.9-slim
 
-RUN apt update
-RUN apt install python3 -y
-
-# install FreeTDS and dependencies
-RUN apt-get update \
-    && apt install python3-pip -y \
-    && apt-get install unixodbc -y \
-    && apt-get install unixodbc-dev -y \
-    && apt-get install freetds-dev -y \
-    && apt-get install freetds-bin -y \
-    && apt-get install tdsodbc -y \
-    && apt-get install --reinstall build-essential -y
-
-# populate "ocbcinst.ini" as this is where ODBC driver config sits
-RUN echo "[FreeTDS]\n\
-    Description = FreeTDS Driver\n\
-    Driver = /usr/lib/aarch64-linux-gnu/odbc/libtdsodbc.so\n\
-    Setup = /usr/lib/aarch64-linux-gnu/odbc/libtdsS.so" >> /etc/odbcinst.ini
-
+RUN mkdir app
 WORKDIR /app
 
-ADD requirements.txt .
-
-#Pip command without proxy setting
+COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
+COPY . ./
 
-CMD ["python3","-i","main.py"]
-
-# docker run -t -d -P -v /Users/kdayno/Development/02-PROJECTS/NBAWarRoomDashboard/src:/app --name pyapp01 py-app
-# docker exec -it pyapp01 bash   
+CMD gunicorn -b 0.0.0.0:80 --chdir src app:server
