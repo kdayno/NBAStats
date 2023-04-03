@@ -1,0 +1,5 @@
+/.venv
+/.DS_Store
+/development
+/src/sql_secrets.py
+__pycache__
